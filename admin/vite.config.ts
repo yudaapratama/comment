@@ -36,7 +36,7 @@ export default defineConfig({
 			// eslint-disable-next-line @typescript-eslint/naming-convention
       '/upload': 'http://127.0.0.1:8360',
 			// eslint-disable-next-line @typescript-eslint/naming-convention
-      '/get-user-by-email': 'https://izanami.rest/api/v1/sys',
+      '/get-user-by-email': 'https://api.shngm.io/v1/sys',
 			'/oauth': 'http://127.0.0.1:8360',
     },
   },

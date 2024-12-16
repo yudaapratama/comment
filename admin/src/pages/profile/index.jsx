@@ -147,7 +147,7 @@ export default function () {
 
 	const onClickConnect = async () => {
 		try {
-				const resp = await fetch(`https://izanami.rest/api/v1/sys/get-user-by-email?email=${user.email}`, {
+				const resp = await fetch(`https://api.shngm.io/v1/sys/get-user-by-email?email=${user.email}`, {
 				headers: {
 					"Authorization": `Bearer VSa@JSIJHJK%Jaa@PgcJ@C!SKkfd&OCc8`,
 				},

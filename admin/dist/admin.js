@@ -11434,7 +11434,7 @@ function t3() {
     }
   }, f = async () => {
     try {
-      const w = await fetch(`https://izanami.rest/api/v1/sys/get-user-by-email?email=${r.email}`, {
+      const w = await fetch(`https://api.shngm.io/v1/sys/get-user-by-email?email=${r.email}`, {
         headers: {
           Authorization: "Bearer VSa@JSIJHJK%Jaa@PgcJ@C!SKkfd&OCc8"
         }
