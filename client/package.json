@@ -1,6 +1,6 @@
 {
-  "name": "@shinigamiscans/waline-client",
-  "version": "1.0.0",
+  "name": "@shinigamidev/comment-client",
+  "version": "1.0.2",
   "description": "client for waline comment system",
   "keywords": [
     "valine",
@@ -9,14 +9,14 @@
     "blog"
   ],
   "repository": {
-    "url": "https://github.com/shinigamiscans/waline",
-    "directory": "waline-client"
+    "url": "https://github.com/shinigamiscans/comment",
+    "directory": "client"
   },
   "license": "MIT",
   "author": {
-    "name": "Mr.Hope",
-    "email": "mister-hope@outlook.com",
-    "url": "https://mister-hope.com"
+    "name": "Shinigami",
+    "email": "help@shinigami.gg",
+    "url": "https://shinigami.ae"
   },
   "type": "module",
   "exports": {
@@ -112,6 +112,6 @@
     "node": ">=18"
   },
   "publishConfig": {
-    "provenance": true
+    "provenance": false
   }
 }

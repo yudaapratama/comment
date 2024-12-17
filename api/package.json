@@ -42,5 +42,11 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "esbuild": "^0.24.0",
+    "rollup": "^4.28.1",
+    "rollup-plugin-dts": "^6.1.1",
+    "rollup-plugin-esbuild": "^6.1.1"
   }
 }

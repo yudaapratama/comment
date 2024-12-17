@@ -1,20 +1,64 @@
-# docker-compose.yml
-version: '3'
-
+version: '3.8'
 services:
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: walinepass
+      MYSQL_DATABASE: waline
+      MYSQL_USER: waline
+      MYSQL_PASSWORD: walinepass
+    networks:
+      - waline_network
+
   waline:
-    container_name: waline
-    image: lizheming/waline:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - mysql
     restart: always
     ports:
-      - 127.0.0.1:8360:8360
+      - "8360:8360"
+    environment:
+      MYSQL_DB: waline
+      MYSQL_USER: waline
+      MYSQL_PASSWORD: walinepass
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_PREFIX: wl_
+      SITE_NAME: Shinigami Hub
+      DISABLE_AUTHOR_NOTIFY: true
+      DISABLE_REGION: true
+      DISABLE_USERAGENT: true
+      LOGIN: force
+      SERVER_URL: https://komen-api.shngm.id
+      LEVELS: 0,10,20,50,100,200
+      OAUTH_URL: https://auth.shngm.io
+      WALINE_ADMIN_MODULE_ASSET_URL: https://cdn.jsdelivr.net/gh/shinigamiscans/comment@1.0.1/admin/dist/admin.js
+    networks:
+      - waline_network
     volumes:
       - ${PWD}/data:/app/data
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - "8081:80"
     environment:
-      TZ: 'Asia/Shanghai'
-      SQLITE_PATH: '/app/data'
-      JWT_TOKEN: 'Your token'
-      SITE_NAME: 'Your site name'
-      SITE_URL: 'https://example.com'
-      SECURE_DOMAINS: 'example.com'
-      AUTHOR_EMAIL: 'mail@example.com'
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    depends_on:
+      - mysql
+    networks:
+      - waline_network
+
+networks:
+  waline_network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    external: true

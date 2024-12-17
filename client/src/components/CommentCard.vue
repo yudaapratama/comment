@@ -18,21 +18,9 @@ import { getTimeAgo, isLinkHttp } from '../utils/index.js';
 
 const props = withDefaults(
   defineProps<{
-    /**
-     * Comment data
-     */
     comment: WalineComment;
-    /**
-     * Current comment to be edited
-     */
     edit?: WalineComment | null;
-    /**
-     * Root comment id
-     */
     rootId: string;
-    /**
-     * Current comment to be replied
-     */
     reply?: WalineComment | null;
   }>(),
   {
@@ -93,10 +81,17 @@ const isEditingCurrent = computed(
 </script>
 
 <template>
-  <div :id="comment.objectId" class="wl-card-item">
+  <div
+    :id="comment.objectId"
+    :class="['wl-card-item', { sticky: comment.sticky }]"
+  >
     <div class="wl-user" aria-hidden="true">
-      <img v-if="comment.avatar" class="wl-user-avatar" :src="comment.avatar" alt="" />
-
+      <img
+        v-if="comment.avatar"
+        class="wl-user-avatar"
+        :src="comment.avatar"
+        alt=""
+      />
       <VerifiedIcon v-if="comment.type" />
     </div>
 
@@ -110,22 +105,15 @@ const isEditingCurrent = computed(
           rel="nofollow noopener noreferrer"
           >{{ comment.nick }}</a
         >
-
         <span v-else class="wl-nick">{{ comment.nick }}</span>
 
         <span
           v-if="comment.type === 'administrator'"
-          class="wl-badge"
+          :class="['wl-badge', 'admin']"
           v-text="locale.admin"
         />
 
         <span v-if="comment.label" class="wl-badge" v-text="comment.label" />
-
-        <span
-          v-if="comment['sticky']"
-          class="wl-badge"
-          v-text="locale.sticky"
-        />
 
         <span
           v-if="typeof comment.level === 'number'"
@@ -187,17 +175,14 @@ const isEditingCurrent = computed(
           />
         </template>
       </div>
-      <!-- eslint-disable vue/no-v-html -->
+
       <div v-if="!isEditingCurrent" class="wl-content">
         <p v-if="comment.reply_user">
           <a :href="'#' + comment.pid">@{{ comment.reply_user.nick }}</a>
-
           <span>: </span>
         </p>
-
         <div v-html="comment.comment" />
       </div>
-      <!-- eslint-enable vue/no-v-html -->
 
       <div v-if="isAdmin && !isEditingCurrent" class="wl-admin-actions">
         <span class="wl-comment-status">
