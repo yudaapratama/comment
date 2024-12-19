@@ -22,6 +22,7 @@ services:
     ports:
       - "8360:8360"
     environment:
+      TZ: 'UTC'
       MYSQL_DB: waline
       MYSQL_USER: waline
       MYSQL_PASSWORD: walinepass

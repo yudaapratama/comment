@@ -13,7 +13,7 @@ RUN pnpm i
 # Stage 2: Runtime
 FROM node:lts-slim
 WORKDIR /app
-ENV TZ Asia/Shanghai
+ENV TZ UTC
 ENV NODE_ENV production
 
 # Copy only necessary files from the build stage
