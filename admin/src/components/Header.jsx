@@ -68,19 +68,6 @@ export default function () {
         </nav>
       ) : null}
       <div className="operate">
-        <div className="language-select">
-          <select
-            defaultValue={defaultLanguage}
-            onChange={updateLanguage}
-            style={{ width: 120 }}
-          >
-            {LANGUAGE_OPTIONS.map((options) => (
-              <option key={options.value} value={options.value}>
-                {options.label}
-              </option>
-            ))}
-          </select>
-        </div>
         {user?.type ? (
           <Link to="/ui/profile" className="author">
             {user.display_name}
@@ -93,21 +80,6 @@ export default function () {
           </a>
         ) : null}
       </div>
-    </div>,
-    latestVersion ? (
-      <div className="upgrade-tips clear-fix" key="upgrade">
-        <Trans
-          i18nKey="new version tips"
-          defaults="New version @waline/vercel@{{version}} published, please upgrade it! Goto <a href='https://waline.js.org/en/advanced/faq.html#server' target='_blank'>FAQ</a> to find How to upgrade it."
-          components={{
-            a: <a />,
-          }}
-          values={{
-            version: latestVersion,
-          }}
-          transKeepBasicHtmlNodesFor={['a']}
-        />
-      </div>
-    ) : null,
+    </div>
   ];
 }
