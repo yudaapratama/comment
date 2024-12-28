@@ -68,6 +68,7 @@ export default function () {
         </nav>
       ) : null}
       <div className="operate">
+        
         {user?.type ? (
           <Link to="/ui/profile" className="author">
             {user.display_name}
@@ -80,6 +81,7 @@ export default function () {
           </a>
         ) : null}
       </div>
-    </div>
+    </div>,
+    
   ];
 }

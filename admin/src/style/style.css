@@ -1,9 +1,9 @@
 @charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 html {
   height: 100%;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 body {
   font-family: 'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   background: #09090b;
@@ -66,7 +66,7 @@ input[type='password'],
 input[type='email'],
 textarea {
   background: #27272a;
-  color: #d4d4d8;
+	color: #d4d4d8;
   border: 1px solid #27272a;
   padding: 7px;
   border-radius: 2px;
@@ -206,9 +206,9 @@ select {
 
 .primary {
   border: 1px solid #4f46e5;
-  border-radius: 8px;
   background-color: #4f46e5;
   cursor: pointer;
+  border-radius: 8px;
   color: #fff;
 }
 
@@ -393,7 +393,7 @@ select {
 /** 后台头部导航 */
 .typecho-head-nav {
   padding: 0 10px;
-  background: #18181b;
+  background: #292d33;
 }
 
 .typecho-head-nav a {
@@ -617,7 +617,8 @@ select {
 }
 
 .profile-avatar {
-  border-radius: 8px;
+  border: 1px dashed #d9d9d6;
+	border-radius: 8px;
   width: 150px;
 }
 
