@@ -20,7 +20,6 @@
     "@koa/cors": "^5.0.0",
     "@mdit/plugin-katex": "0.8.0",
     "@mdit/plugin-mathjax": "0.4.8",
-    "@mdit/plugin-spoiler": "^0.14.0",
     "@mdit/plugin-sub": "0.8.0",
     "@mdit/plugin-sup": "0.8.0",
     "@traptitech/markdown-it-spoiler": "^1.1.6",

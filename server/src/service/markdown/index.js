@@ -3,7 +3,7 @@ const { sub: subPlugin } = require('@mdit/plugin-sub');
 const { sup: supPlugin } = require('@mdit/plugin-sup');
 const MarkdownIt = require('markdown-it');
 const emojiPlugin = require('markdown-it-emoji');
-const { spoiler } = require('@mdit/plugin-spoiler');
+const inlineSpoiler = require('@traptitech/markdown-it-spoiler');
 
 const { resolveHighlighter } = require('./highlight.js');
 const { mathjaxPlugin } = require('./mathjax.js');
@@ -60,16 +60,8 @@ const getMarkdownParser = () => {
     markdownIt.use(mathjaxPlugin, mathjax);
   }
 
-  markdownIt.use(blockSpoiler);
-  
-  // Replace inlineSpoiler with the @mdit/plugin-spoiler
-  markdownIt.use(spoiler, {
-    tag: 'span',
-    attrs: [
-      ['tabindex', '0'],
-      ['class', 'spoiler'],
-    ],
-  });
+	markdownIt.use(blockSpoiler);
+	markdownIt.use(inlineSpoiler, false);
 
   return (content) => sanitize(markdownIt.render(content));
 };

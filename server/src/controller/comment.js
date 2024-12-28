@@ -673,9 +673,13 @@ module.exports = class extends BaseRest {
   }
 
   async getRecentCommentList() {
-    const { count } = this.get();
+    const { count, mail } = this.get();
     const { userInfo } = this.ctx.state;
     const where = {};
+
+		if(mail) {
+			where.mail = mail;
+		}
 
     if (think.isEmpty(userInfo) || this.config('storage') === 'deta') {
       where.status = ['NOT IN', ['waiting', 'spam']];
@@ -737,10 +741,14 @@ module.exports = class extends BaseRest {
   }
 
   async getCommentCount() {
-    const { url } = this.get();
+    const { url, mail } = this.get();
     const { userInfo } = this.ctx.state;
     const where = Array.isArray(url) && url.length ? { url: ['IN', url] } : {};
 
+		if(mail) {
+			where.mail = mail;
+		}
+		
     if (think.isEmpty(userInfo) || this.config('storage') === 'deta') {
       where.status = ['NOT IN', ['waiting', 'spam']];
     } else {
