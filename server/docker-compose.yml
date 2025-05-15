@@ -3,12 +3,12 @@ services:
   mysql:
     image: mysql:5.7
     volumes:
-      - mysql_data:/var/lib/mysql
+      - /root/volumes/mysql:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: walinepass
-      MYSQL_DATABASE: waline
-      MYSQL_USER: waline
-      MYSQL_PASSWORD: walinepass
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     networks:
       - waline_network
 
@@ -22,22 +22,22 @@ services:
     ports:
       - "8360:8360"
     environment:
-      TZ: 'UTC'
-      MYSQL_DB: waline
-      MYSQL_USER: waline
-      MYSQL_PASSWORD: walinepass
-      MYSQL_HOST: mysql
-      MYSQL_PORT: 3306
-      MYSQL_PREFIX: wl_
-      SITE_NAME: Shinigami Hub
-      DISABLE_AUTHOR_NOTIFY: true
-      DISABLE_REGION: true
-      DISABLE_USERAGENT: true
-      LOGIN: force
-      SERVER_URL: https://komen-api.shngm.id
-      LEVELS: 0,10,20,50,100,200
-      OAUTH_URL: https://auth.shngm.io
-      WALINE_ADMIN_MODULE_ASSET_URL: https://cdn.jsdelivr.net/gh/shinigamiscans/comment@1.0.1/admin/dist/admin.js
+      TZ: ${TZ}
+      MYSQL_DB: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_PREFIX: ${MYSQL_PREFIX}
+      SITE_NAME: ${SITE_NAME}
+      DISABLE_AUTHOR_NOTIFY: ${DISABLE_AUTHOR_NOTIFY}
+      DISABLE_REGION: ${DISABLE_REGION}
+      DISABLE_USERAGENT: ${DISABLE_USERAGENT}
+      LOGIN: ${LOGIN}
+      SERVER_URL: ${SERVER_URL}
+      LEVELS: ${LEVELS}
+      OAUTH_URL: ${OAUTH_URL}
+      WALINE_ADMIN_MODULE_ASSET_URL: ${WALINE_ADMIN_MODULE_ASSET_URL}
     networks:
       - waline_network
     volumes:
