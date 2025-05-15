@@ -11409,7 +11409,7 @@ function rg() {
   }, w = async function(g) {
     try {
       let S = new FormData();
-      return S.append("file", g), (await (await fetch("https://upload.shngm.id/upload/image", {
+      return S.append("file", g), (await (await fetch("https://profileupload.shngm.id/upload/image", {
         method: "POST",
         body: S
       })).json()).imageUrl;

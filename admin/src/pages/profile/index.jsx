@@ -133,7 +133,7 @@ export default function () {
 					
 			formData.append('file', file);
 	
-			const result = await fetch('https://upload.shngm.id/upload/image', {
+			const result = await fetch('https://profileupload.shngm.id/upload/image', {
 				method: 'POST',
 				body: formData
 			});
