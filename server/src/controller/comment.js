@@ -218,6 +218,8 @@ module.exports = class extends BaseRest {
 
     const resp = await this.modelInstance.add(data);
 
+		await this.model('Users').where({ id: data.user_id }).increment('comment_count', 1);
+
     think.logger.debug(`Comment have been added to storage.`);
 
     let parentComment;
@@ -381,7 +383,20 @@ module.exports = class extends BaseRest {
       return this.fail(preDeleteResp);
     }
 
-    await this.modelInstance.delete({
+		const commentsToDelete = await this.modelInstance.select({
+			_complex: {
+				_logic: 'or',
+				objectId: this.id,
+				pid: this.id,
+				rid: this.id,
+			}
+		});
+
+		const userIdsToDecrement = Array.from(new Set(
+			commentsToDelete.map(c => c.user_id).filter(Boolean)
+		));
+
+		await this.modelInstance.delete({
       _complex: {
         _logic: 'or',
         objectId: this.id,
@@ -389,6 +404,11 @@ module.exports = class extends BaseRest {
         rid: this.id,
       },
     });
+
+		for (const userId of userIdsToDecrement) {
+			await this.model('Users').where({ id: userId }).decrement('comment_count', 1);
+		}
+
     await this.hook('postDelete', this.id);
 
     return this.success();
@@ -506,43 +526,60 @@ module.exports = class extends BaseRest {
       users = await userModel.select(
         { objectId: ['IN', user_ids] },
         {
-          field: ['display_name', 'email', 'url', 'type', 'avatar', 'label'],
+          field: ['display_name', 'email', 'url', 'type', 'avatar', 'label', 'comment_count'],
         },
       );
     }
 
     if (think.isArray(this.config('levels'))) {
-      const countWhere = {
-        status: ['NOT IN', ['waiting', 'spam']],
-        _complex: {},
-      };
+			// const findUsers = await userModel.select(
+      //   { objectId: ['IN', user_ids] },
+      //   {
+      //     field: ['display_name', 'email', 'url', 'type', 'avatar', 'label', 'comment_count'],
+      //   },
+      // );
+			comments.map((cmt) => {
+				const user = users.find(({ objectId }) => objectId === cmt.user_id);
+				cmt.level = think.getLevel(user.comment_count);
+			})
 
-      if (user_ids.length) {
-        countWhere._complex.user_id = ['IN', user_ids];
-      }
-      const mails = Array.from(
-        new Set(comments.map(({ mail }) => mail).filter((v) => v)),
-      );
+      // const countWhere = {
+      //   status: ['NOT IN', ['waiting', 'spam']],
+      //   _complex: {},
+      // };
 
-      if (mails.length) {
-        countWhere._complex.mail = ['IN', mails];
-      }
-      if (!think.isEmpty(countWhere._complex)) {
-        countWhere._complex._logic = 'or';
-      } else {
-        delete countWhere._complex;
-      }
-      const counts = await this.modelInstance.count(countWhere, {
-        group: ['user_id', 'mail'],
-      });
+      // if (user_ids.length) {
+      //   countWhere._complex.user_id = ['IN', user_ids];
+      // }
+      // const mails = Array.from(
+      //   new Set(comments.map(({ mail }) => mail).filter((v) => v)),
+      // );
 
-      comments.forEach((cmt) => {
-        const countItem = (counts || []).find(({ mail, user_id }) =>
-          cmt.user_id ? user_id === cmt.user_id : mail === cmt.mail,
-        );
+      // if (mails.length) {
+      //   countWhere._complex.mail = ['IN', mails];
+      // }
+      // if (!think.isEmpty(countWhere._complex)) {
+      //   countWhere._complex._logic = 'or';
+      // } else {
+      //   delete countWhere._complex;
+      // }
+      // const counts = await this.modelInstance.count(countWhere, {
+      //   group: ['user_id', 'mail'],
+      // });
+			// console.log('counts', counts);
 
-        cmt.level = think.getLevel(countItem?.count);
-      });
+
+      // comments.forEach((cmt) => {
+      //   const countItem = (counts || []).find(({ mail, user_id }) =>
+      //     cmt.user_id ? user_id === cmt.user_id : mail === cmt.mail,
+      //   );
+
+      //   cmt.level = think.getLevel(countItem?.count);
+      //   // cmt.level = think.getLevel(users.comment_count);
+      // });
+			console.log('comments', comments);
+
+
     }
 
     return {
