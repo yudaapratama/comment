@@ -18,6 +18,7 @@ module.exports = [
   {
     handle: 'prefix-warning',
   },
+	{ handle: 'rateLimiter' },
   {
     handle: 'meta',
     options: {

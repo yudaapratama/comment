@@ -532,54 +532,10 @@ module.exports = class extends BaseRest {
     }
 
     if (think.isArray(this.config('levels'))) {
-			// const findUsers = await userModel.select(
-      //   { objectId: ['IN', user_ids] },
-      //   {
-      //     field: ['display_name', 'email', 'url', 'type', 'avatar', 'label', 'comment_count'],
-      //   },
-      // );
 			comments.map((cmt) => {
 				const user = users.find(({ objectId }) => objectId === cmt.user_id);
 				cmt.level = think.getLevel(user.comment_count);
 			})
-
-      // const countWhere = {
-      //   status: ['NOT IN', ['waiting', 'spam']],
-      //   _complex: {},
-      // };
-
-      // if (user_ids.length) {
-      //   countWhere._complex.user_id = ['IN', user_ids];
-      // }
-      // const mails = Array.from(
-      //   new Set(comments.map(({ mail }) => mail).filter((v) => v)),
-      // );
-
-      // if (mails.length) {
-      //   countWhere._complex.mail = ['IN', mails];
-      // }
-      // if (!think.isEmpty(countWhere._complex)) {
-      //   countWhere._complex._logic = 'or';
-      // } else {
-      //   delete countWhere._complex;
-      // }
-      // const counts = await this.modelInstance.count(countWhere, {
-      //   group: ['user_id', 'mail'],
-      // });
-			// console.log('counts', counts);
-
-
-      // comments.forEach((cmt) => {
-      //   const countItem = (counts || []).find(({ mail, user_id }) =>
-      //     cmt.user_id ? user_id === cmt.user_id : mail === cmt.mail,
-      //   );
-
-      //   cmt.level = think.getLevel(countItem?.count);
-      //   // cmt.level = think.getLevel(users.comment_count);
-      // });
-			console.log('comments', comments);
-
-
     }
 
     return {
