@@ -107,6 +107,16 @@ module.exports = class extends Base {
     );
   }
 
+	async increment(field, step = 1, where) {
+    const instance = this.model(this.tableName);
+    return instance.where(this.parseWhere(where)).increment(field, step);
+  }
+
+  async decrement(field, step = 1, where) {
+    const instance = this.model(this.tableName);
+    return instance.where(this.parseWhere(where)).decrement(field, step);
+  }
+
   async delete(where) {
     const instance = this.model(this.tableName);
 
