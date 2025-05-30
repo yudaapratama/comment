@@ -18,7 +18,6 @@ module.exports = [
   {
     handle: 'prefix-warning',
   },
-	{ handle: 'rateLimiter' },
   {
     handle: 'meta',
     options: {
@@ -61,7 +60,7 @@ module.exports = [
       limit: '5mb',
     },
   },
-
+	
   {
     handle: 'router',
     options: {
@@ -72,8 +71,10 @@ module.exports = [
   { handle: routerREST },
 
   'logic',
+	{ handle: 'rateLimiter' },
   {
     handle: 'plugin',
   },
   'controller',
+	
 ];

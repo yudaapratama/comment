@@ -27,17 +27,15 @@ module.exports = () => {
 			? `user:${ctx.state.userInfo.objectId}`
 			: `ip:${ctx.ip}`;
 			
-			
       try {
         
         await limiter.consume(key, 1);
       } catch (_err) {
         if (ctx.state.userInfo) {
-          await ctx.model('Users').update(
+          await ctx.model('Users').where({ id: ctx.state.userInfo.objectId }).update(
             { is_banned: true },
-            { objectId: ctx.state.userInfo.objectId }
           );
-          await ctx.model('Comment').delete({ user_id: ctx.state.userInfo.objectId });
+          await ctx.model('Comment').where({ user_id: ctx.state.userInfo.objectId }).delete();
         }
         ctx.status = 429;
 

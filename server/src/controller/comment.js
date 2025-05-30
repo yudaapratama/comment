@@ -218,7 +218,9 @@ module.exports = class extends BaseRest {
 
     const resp = await this.modelInstance.add(data);
 
-		await this.model('Users').where({ id: data.user_id }).increment('comment_count', 1);
+		await this.getModel('Users').increment('comment_count', 1, {
+			id: data.user_id
+		});
 
     think.logger.debug(`Comment have been added to storage.`);
 
@@ -406,7 +408,9 @@ module.exports = class extends BaseRest {
     });
 
 		for (const userId of userIdsToDecrement) {
-			await this.model('Users').where({ id: userId }).decrement('comment_count', 1);
+			await this.getModel('Users').decrement('comment_count', 1, {
+				id: userId
+			});
 		}
 
     await this.hook('postDelete', this.id);
