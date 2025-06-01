@@ -119,3 +119,69 @@ div[tabindex='-1'] {
 	width: 300px;
 	margin: 15px 0;
 }
+
+.login-tab-container {
+	min-width: 300px;
+}
+
+.login-tabs {
+	display: flex;
+	gap: 10px;
+	padding: 20px 0;
+	border-bottom: 1px solid #222;
+}
+
+.login-tab {
+	flex: 1;
+	text-align: center;
+	padding: 10px 0;
+	cursor: pointer;
+	font-weight: bold;
+	transition: 0.3s;
+}
+
+.login-tab.active {
+	background: #4f46e5;
+	border-radius: 8px 8px 8px 8px;
+	color: white;
+}
+
+.login-tab-content {
+	display: none;
+	padding: 10px 0;
+}
+
+.login-tab-content.active {
+	display: block;
+}
+
+.login-tab-title {
+	text-align: center;
+	margin: 20px 0 10px;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+.login-social-content {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.btn-social {
+	color: #000;
+	padding: 0 12px;
+	height: 40px;
+  font-size: 1.14286em;
+	display: flex; 
+	align-items: center; 
+	justify-content: center; 
+	gap: 8px; 
+	border-radius: 8px;
+	background-color: #fff;
+	text-transform: capitalize;
+}
+
+.btn-social:hover {
+	color: #000;
+}
