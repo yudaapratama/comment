@@ -57,7 +57,7 @@ export default function () {
         <ul>{error ? <li>{error}</li> : null}</ul>
       </div>
       <div className="typecho-login-wrap">
-        <div className="typecho-login">
+        <div className="typecho-login" style={{ padding: '0 8px' }}>
           <form method="post" name="login" role="form" onSubmit={onSubmit}>
             <ul className="typecho-option">
               <li>

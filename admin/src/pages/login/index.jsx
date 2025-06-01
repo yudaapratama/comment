@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
@@ -16,6 +16,7 @@ export default function () {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [is2FAEnabled, enable2FA] = useState(false);
+	const [activeTab, setActiveTab] = useState('social');
   const execute = useCaptcha({
     sitekey: window.turnstileKey || window.recaptchaV3Key,
     hideDefaultBadge: true,
@@ -81,6 +82,10 @@ export default function () {
     }
   };
 
+	const switchTab = function(tab) {
+		setActiveTab(tab);
+  }
+
   const check2FACode = async (e) => {
     const email = e.target.value;
 
@@ -101,7 +106,7 @@ export default function () {
     baseUrl = match ? match[1] : '/';
   }
 
-  const socials = ['google'];
+  const socials = ['google', 'discord', 'twitter'];
 
   return (
     <>
@@ -118,89 +123,108 @@ export default function () {
       </div>
       <div className="typecho-login-wrap">
         <div className="typecho-login">
+					<div className="login-tab-container">
+						<div className="login-tabs">
+							<div id="tab-social" className={`login-tab ${activeTab === 'social' ? 'active' : '' }`} onClick={() => switchTab('social')}>Social</div>
+							<div id="tab-password" className={`login-tab ${activeTab === 'password' ? 'active' : '' }`} onClick={() => switchTab('password')}>Password</div>
+						</div>
+
+						<div id="social" className={`login-tab-content ${activeTab === 'social' ? 'active' : '' }`}>
+							<div className="login-tab-title">Sign In</div>
+							<div className="login-social-content">
+								{(window.ALLOW_SOCIALS || socials).map((social) => (
+									<a
+										className="btn-social"
+										key={social}
+										href={`${baseUrl}oauth${
+											window.ALLOW_SOCIALS ? '/' + social + '?' : `?type=${social}`
+										}&redirect=${basePath}ui/profile`}
+										style={{textDecoration: 'none'}}
+									>
+										{React.createElement(Icons[social], {
+											width: 20,
+										})}
+										{social}
+									</a>
+								))}
+
+								
+							</div>
+						</div>
+
+						<div id="password" className={`login-tab-content ${activeTab === 'password' ? 'active' : '' }`}>
+							<div className="login-tab-title">Login with Password</div>
+							<form method="post" name="login" role="form" onSubmit={onSubmit} style={{ minWidth: '300px' }}>
+								<p>
+									<label htmlFor="email" className="sr-only">
+										{t('email')}
+									</label>
+									<input
+										type="text"
+										id="email"
+										name="email"
+										placeholder={t('email')}
+										className="text-l w-100"
+										onBlur={check2FACode}
+									/>
+								</p>
+								<p>
+									<label htmlFor="password" className="sr-only">
+										{t('password')}
+									</label>
+									<input
+										type="password"
+										id="password"
+										name="password"
+										className="text-l w-100"
+										placeholder={t('password')}
+									/>
+								</p>
+								{is2FAEnabled && (
+									<p>
+										<label htmlFor="code" className="sr-only">
+											{t('2fa code')}
+										</label>
+										<input
+											type="text"
+											id="code"
+											name="code"
+											className="text-l w-100"
+											placeholder={t('2fa code')}
+										/>
+									</p>
+								)}
+								<p className="captcha-container" />
+								<p className="submit">
+									<button
+										type="submit"
+										className="btn btn-l w-100 primary"
+										disabled={loading}
+									>
+										{t('login')}
+									</button>
+								</p>
+								<p style={{ display: 'flex', justifyContent: 'space-between' }}>
+									<label htmlFor="remember">
+										<input
+											type="checkbox"
+											name="remember"
+											className="checkbox"
+											id="remember"
+										/>{' '}
+										{t('remember me')}
+									</label>
+									<span className="right forgot-password">
+										<Link to="/ui/forgot">{t('forgot password')}</Link>
+									</span>
+								</p>
+							</form>
+						</div>
+					</div>
           {/* <h1><a href="http://waline.js.org" className="i-logo">Waline</a></h1> */}
 
-          <form method="post" name="login" role="form" onSubmit={onSubmit} style={{ minWidth: '300px' }}>
-            <p>
-              <label htmlFor="email" className="sr-only">
-                {t('email')}
-              </label>
-              <input
-                type="text"
-                id="email"
-                name="email"
-                placeholder={t('email')}
-                className="text-l w-100"
-                onBlur={check2FACode}
-              />
-            </p>
-            <p>
-              <label htmlFor="password" className="sr-only">
-                {t('password')}
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                className="text-l w-100"
-                placeholder={t('password')}
-              />
-            </p>
-            {is2FAEnabled && (
-              <p>
-                <label htmlFor="code" className="sr-only">
-                  {t('2fa code')}
-                </label>
-                <input
-                  type="text"
-                  id="code"
-                  name="code"
-                  className="text-l w-100"
-                  placeholder={t('2fa code')}
-                />
-              </p>
-            )}
-            <p className="captcha-container" />
-            <p className="submit">
-              <button
-                type="submit"
-                className="btn btn-l w-100 primary"
-                disabled={loading}
-              >
-                {t('login')}
-              </button>
-            </p>
-            <p style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <label htmlFor="remember">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="checkbox"
-                  id="remember"
-                />{' '}
-                {t('remember me')}
-              </label>
-              <span className="right forgot-password">
-                <Link to="/ui/forgot">{t('forgot password')}</Link>
-              </span>
-            </p>
-          </form>
-          <div className="social-accounts">
-            {(window.ALLOW_SOCIALS || socials).map((social) => (
-              <a
-                key={social}
-                href={`${baseUrl}oauth${
-                  window.ALLOW_SOCIALS ? '/' + social + '?' : `?type=${social}`
-                }&redirect=${basePath}ui/profile`}
-              >
-                {React.createElement(Icons[social])}
-              </a>
-            ))}
-          </div>
-
           <p className="more-link">
-            <Link to="/ui">{t('back to home')}</Link> •{' '}
-            <Link to="/ui/register">{t('register')}</Link>
+            <Link to="/ui">{t('back to home')}</Link>
           </p>
         </div>
       </div>
