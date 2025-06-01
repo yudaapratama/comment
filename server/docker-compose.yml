@@ -34,10 +34,15 @@ services:
       DISABLE_REGION: ${DISABLE_REGION}
       DISABLE_USERAGENT: ${DISABLE_USERAGENT}
       LOGIN: ${LOGIN}
-      SERVER_URL: ${SERVER_URL}
       LEVELS: ${LEVELS}
       OAUTH_URL: ${OAUTH_URL}
       WALINE_ADMIN_MODULE_ASSET_URL: ${WALINE_ADMIN_MODULE_ASSET_URL}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      LIMITER_POINT: ${LIMITER_POINT}
+      LIMITER_DURATION: ${LIMITER_DURATION}
+      LIMITER_BLOCK_DURATION: ${LIMITER_BLOCK_DURATION}
+      IPQPS: 0
     networks:
       - waline_network
     volumes:
@@ -53,6 +58,17 @@ services:
       PMA_PORT: 3306
     depends_on:
       - mysql
+    networks:
+      - waline_network
+  redis:
+    image: redis:7-alpine
+    restart: always
+    volumes:
+      - /root/volumes/redis:/data
+    environment:
+      TZ: ${TZ}
+    ports:
+      - "6379:6379"   # expose only if you need host access
     networks:
       - waline_network
 
