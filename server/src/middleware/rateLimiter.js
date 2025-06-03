@@ -58,7 +58,7 @@ module.exports = () => {
       ctx.status = 429;
       ctx.body = {
         success: false,
-        message: 'You are doing that too often; you have been blocked.',
+        message: 'Anda Ketahuan Nyepam, Kami Ban Di Tempat.',
       };
       return; 
     }
