@@ -339,8 +339,8 @@ export default function () {
                 </form>
               </section>
 							<section>
-								<div style={{ display: 'flex', flexDirection: 'column' }}>
-									<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+								<div className='change-password-wrapper'>
+									<div className='change-password-label'>
 										<div>
 											<h3>{t('password')}</h3>
 											<span>******</span>
@@ -350,7 +350,7 @@ export default function () {
 										</a>
 									</div>
 									{ isEditPassword ? (
-										<div>
+									<div>
 										<form method="post" onSubmit={onPasswordUpdate}>
 											<ul className="typecho-option">
 												<li>
